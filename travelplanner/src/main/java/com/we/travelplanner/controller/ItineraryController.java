@@ -1,5 +1,6 @@
 package com.we.travelplanner.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,9 +59,12 @@ public class ItineraryController {
 
     // update
     @PutMapping("/{id}")
-    public ResponseEntity<Itinerary> updateItinerary(@PathVariable Integer id, @RequestBody Itinerary itinerary) {
-        Itinerary updatedItinerary = itineraryService.saveItinerary(itinerary);
+    public ResponseEntity<Itinerary> updateItinerary(@PathVariable Integer id, @RequestBody String editedPlan) {
+        Itinerary updatedItinerary = itineraryService.getItineraryById(id);
         if (updatedItinerary != null) {
+            updatedItinerary.setPlan(editedPlan);
+            updatedItinerary.setUpdatedAt(new Date());
+            itineraryService.saveItinerary(updatedItinerary);
             return ResponseEntity.ok(updatedItinerary);
         } else {
             return ResponseEntity.notFound().build();
