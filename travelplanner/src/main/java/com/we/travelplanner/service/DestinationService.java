@@ -11,8 +11,12 @@ import com.we.travelplanner.model.Destination;
 @Service
 public class DestinationService {
 
+    private final DestinationRepository destinationRepository;
+
     @Autowired
-    private DestinationRepository destinationRepository;
+    public DestinationService(DestinationRepository destinationRepository) {
+        this.destinationRepository = destinationRepository;
+    }
 
     // get all destinations
 
@@ -36,5 +40,10 @@ public class DestinationService {
 
     public void deleteDestination(Integer id) {
         destinationRepository.deleteById(id);
+    }
+
+    // get destination by name
+    public Destination getDestinationByName(String name) {
+        return destinationRepository.findByName(name).orElse(null);
     }
 }
