@@ -1,11 +1,13 @@
 package com.we.travelplanner.service;
 
+import java.time.Duration;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.theokanning.openai.completion.CompletionRequest;
+import com.theokanning.openai.completion.chat.ChatCompletionRequest;
+import com.theokanning.openai.completion.chat.ChatMessage;
 import com.theokanning.openai.service.OpenAiService;
 import com.we.travelplanner.dao.ItineraryRepository;
 import com.we.travelplanner.model.Destination;
@@ -16,6 +18,7 @@ import io.github.cdimascio.dotenv.Dotenv;
 @Service
 public class ItineraryService {
 
+    private static final String SYSTEM_MESSAGE = " You are a sophisticated AI travel planner. Your task is to create a detailed travel itinerary based on the destination provided by the user. Please make sure to include recommendations for attractions, activities, local cuisine, and lodging where appropriate. Do not provide anything else.";
     private final ItineraryRepository itineraryRepository;
     private final DestinationService destinationService;
     private final OpenAiService openAiService;
@@ -33,7 +36,9 @@ public class ItineraryService {
         if (token == null) {
             throw new IllegalArgumentException("API_KEY not set in the environment variables.");
         }
-        this.openAiService = new OpenAiService(token);
+
+        // added timeout duration of 60s
+        this.openAiService = new OpenAiService(token, Duration.ofSeconds(60));
     }
 
     public List<Itinerary> getAllItineraries() {
@@ -70,16 +75,18 @@ public class ItineraryService {
         }
 
         // generate plan
-        CompletionRequest completionRequest = CompletionRequest.builder()
-                .prompt("Somebody once told me the world is gonna roll me")
-                .model("ada")
-                .echo(true)
+        ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
+                .builder()
+                .model("gpt-3.5-turbo")
+                .messages(List.of(
+                        new ChatMessage("system", SYSTEM_MESSAGE),
+                        new ChatMessage("user", userInput)))
                 .build();
 
         StringBuilder builder = new StringBuilder();
-        openAiService.createCompletion(completionRequest)
+        openAiService.createChatCompletion(chatCompletionRequest)
                 .getChoices().forEach(choice -> {
-                    builder.append(choice.getText());
+                    builder.append(choice.getMessage().getContent());
                 });
 
         String response = builder.toString();

@@ -31,7 +31,7 @@ public class ItineraryController {
     }
 
     // get all
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<Itinerary>> getAllItineraries() {
         List<Itinerary> itineraries = itineraryService.getAllItineraries();
         return ResponseEntity.status(HttpStatus.OK).body(itineraries);
