@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.we.travelplanner.model.Itinerary;
@@ -48,6 +49,13 @@ public class ItineraryController {
         }
     }
 
+    // get all by name
+    @GetMapping("/by-destination")
+    public ResponseEntity<List<Itinerary>> getItineraryByName(@RequestParam String name) {
+        List<Itinerary> itineraries = itineraryService.getiItineraryByDestinatioName(name);
+        return ResponseEntity.status(HttpStatus.OK).body(itineraries);
+    }
+
     // update
     @PutMapping("/{id}")
     public ResponseEntity<Itinerary> updateItinerary(@PathVariable Integer id, @RequestBody Itinerary itinerary) {
@@ -66,8 +74,8 @@ public class ItineraryController {
     }
 
     @PostMapping("/generate")
-    public ResponseEntity<String> generateItinerary(@RequestBody String destinationName) {
-        String generatedItinerary = itineraryService.generateItinerary(destinationName);
+    public ResponseEntity<Itinerary> generateItinerary(@RequestBody String destinationName) {
+        Itinerary generatedItinerary = itineraryService.generateItinerary(destinationName);
         return ResponseEntity.ok(generatedItinerary);
     }
 

@@ -61,7 +61,12 @@ public class ItineraryService {
         itineraryRepository.deleteById(id);
     }
 
-    public String generateItinerary(String userInput) {
+    public Itinerary generateItinerary(String userInput) {
+
+        // article and api docs used for reference
+        // https://dzone.com/articles/creating-scalable-openai-gpt-applications-in-java
+        // https://github.com/TheoKanning/openai-java
+        // https://platform.openai.com/docs
 
         // destination name validation, if blank and not containing relevent data
 
@@ -83,14 +88,27 @@ public class ItineraryService {
                         new ChatMessage("user", userInput)))
                 .build();
 
+        // build to string
+
         StringBuilder builder = new StringBuilder();
         openAiService.createChatCompletion(chatCompletionRequest)
                 .getChoices().forEach(choice -> {
                     builder.append(choice.getMessage().getContent());
                 });
 
-        String response = builder.toString();
-        return response;
+        String plan = builder.toString();
+
+        // create new itinerary
+        Itinerary itinerary = new Itinerary();
+        itinerary.setDestination(destination);
+        itinerary.setPlan(plan);
+        return itineraryRepository.save(itinerary);
+
+    }
+
+    // get by name
+    public List<Itinerary> getiItineraryByDestinatioName(String name) {
+        return itineraryRepository.findByDestinationName(name).orElse(null);
     }
 
 }
