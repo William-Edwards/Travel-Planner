@@ -105,8 +105,30 @@ public class ItineraryService {
         // create new itinerary
         Itinerary itinerary = new Itinerary();
         itinerary.setDestination(destination);
-        itinerary.setPlan(plan);
+        // format for html
+        itinerary.setPlan(formatPlan(plan));
         return itineraryRepository.save(itinerary);
+
+    }
+
+    // formatter for putting in html tags
+
+    private String formatPlan(String plan) {
+        String[] days = plan.split("Day \\d+:");
+        StringBuilder formattedPlan = new StringBuilder();
+
+        for (int i = 1; i < days.length; i++) {
+            formattedPlan.append("<h3>Day ").append(i).append(":</h3><ul>");
+
+            String[] activities = days[i].split(" - ");
+            for (String activity : activities) {
+                formattedPlan.append("<li>").append(activity.trim()).append("</li>");
+            }
+
+            formattedPlan.append("</ul>");
+        }
+
+        return formattedPlan.toString();
 
     }
 
