@@ -4,6 +4,10 @@ import java.time.Duration;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
@@ -109,6 +113,13 @@ public class ItineraryService {
     // get by name
     public List<Itinerary> getiItineraryByDestinatioName(String name) {
         return itineraryRepository.findByDestinationName(name).orElse(null);
+    }
+
+    // get 3 sample itineraries
+    public List<Itinerary> getSampleItineraries() {
+        // get the latest 3 itineraries
+        Pageable pageable = PageRequest.of(0, 3, Sort.by(Sort.Direction.DESC, "createdAt"));
+        return itineraryRepository.findAll(pageable).getContent();
     }
 
 }

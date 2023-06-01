@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>View Itinerary</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">Travel Planner</a>
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="/search">Search</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="container mt-4">
+        <div th:if="${itinerary != null}" class="card">
+            <div class="card-header">
+                <h2 class="card-title" th:text="${itinerary.destination.name}"></h2>
+            </div>
+            <div class="card-body">
+                <p class="card-text" th:text="${itinerary.plan}"></p>
+                <form th:action="@{/itinerary/{id}/edit(id=${itinerary.id})}" method="get" style="display: inline">
+                    <button type="submit" class="btn btn-primary">Edit</button>
+                </form>
+                <form th:action="@{/itinerary/{id}/delete(id=${itinerary.id})}" method="post" style="display: inline">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+
+        <div th:if="${itinerary == null}" class="alert alert-danger mt-4" role="alert">
+            <p>No itinerary found.</p>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+
+</html>
