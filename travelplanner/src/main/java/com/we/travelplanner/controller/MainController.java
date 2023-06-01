@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.we.travelplanner.model.Itinerary;
 import com.we.travelplanner.service.ItineraryService;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class MainController {
@@ -29,6 +32,18 @@ public class MainController {
 
         // return view
         return "index";
+    }
+
+    @PostMapping("/generate")
+    public String generateItinerary(@RequestParam String userInput, RedirectAttributes redirectAttributes) {
+
+        // generate itin
+        Itinerary itinerary = itineraryService.generateItinerary(userInput);
+
+        // send id for redirect
+        redirectAttributes.addAttribute("id", itinerary.getId());
+
+        return "redirect:/itinerary/{id}";
     }
 
     @GetMapping("/search")
