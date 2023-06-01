@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+    integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+<head>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">Travel Planner</a>
+    </nav>
+
+    <title>Itineraries</title>
+</head>
+
+<body>
+    <div class="container mt-4">
+        <h1 class="mb-4">Itineraries for <span th:text="${destinationName}"></span></h1>
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+            <div class="col" th:each="itinerary : ${itineraries}">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Plan:</h5>
+                        <!-- <p class="card-text" th:text="${itinerary.plan.substring(0,100)}+'...'"></p> -->
+                        <p class="plan-text" th:utext="${#strings.abbreviate(itinerary.plan, 100)}"></p>
+                        <a th:href="@{/itinerary/{id}(id=${itinerary.id})}" class="btn btn-primary">View Full
+                            Itinerary</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a href="/destinations" class="btn btn-secondary mt-3">Back</a>
+    </div>
+</body>
+
+</html>

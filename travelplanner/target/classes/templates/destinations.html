@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+    integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+<head>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">Travel Planner</a>
+    </nav>
+
+    <title>Destinations</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="mt-4 mb-4">Search Destinations</h1>
+        <table class="table table-striped table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="destination : ${destinations}">
+                    <td th:text="${destination.name}"></td>
+                    <td>
+                        <a th:href="@{/destination/{name}(name=${destination.name})}"
+                            class="btn btn-outline-primary btn-sm">View Itineraries</a>
+                        <form th:action="@{/destination/{id}/delete(id=${destination.id})}" method="post"
+                            style="display: inline;">
+                            <button type="submit" class="btn btn-outline-danger btn-sm"
+                                onclick="return confirm('Are you sure you want to delete this destination?')">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>
