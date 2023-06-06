@@ -86,10 +86,19 @@ public class MainController {
         return "itinerary";
     }
 
+    // delete itin
+
     @PostMapping("/itinerary/{id}/delete")
     public String deleteItinerary(@PathVariable("id") int id) {
         itineraryService.deleteItinerary(id);
         return "redirect:/"; // redirect to the home page after deleting the itinerary
+    }
+
+    @PostMapping("/itinerary/{id}/edit")
+    public String updateItinerary(@PathVariable("id") int id, @RequestParam String plan, Model model) {
+        Itinerary updatedItinerary = itineraryService.updateItinerary(id, plan);
+        model.addAttribute("itinerary", updatedItinerary);
+        return "itinerary";
     }
 
 }

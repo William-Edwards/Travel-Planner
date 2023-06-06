@@ -22,24 +22,59 @@
                 <h2 class="card-title" th:text="${itinerary.destination.name}"></h2>
             </div>
             <div class="card-body">
-                <p class="plan-text" th:utext="${itinerary.plan}"></p>
-                <form th:action="@{/itinerary/{id}/edit(id=${itinerary.id})}" method="get" style="display: inline">
-                    <button type="submit" class="btn btn-primary">Edit</button>
-                </form>
+                <!-- Plan Text -->
+                <div id="plan-text" class="plan-text" th:utext="${itinerary.plan}" contenteditable="false"></div>
+
+                <!-- Edit & Save Button -->
+                <button id="edit-button" type="button" class="btn btn-primary">Edit</button>
+                <button id="save-button" type="button" class="btn btn-primary" style="display: none">Save</button>
+
+                <!-- Delete Button -->
                 <form th:action="@{/itinerary/{id}/delete(id=${itinerary.id})}" method="post" style="display: inline">
                     <button type="submit" class="btn btn-danger">Delete</button>
                 </form>
             </div>
         </div>
+    </div>
 
-        <div th:if="${itinerary == null}" class="alert alert-danger mt-4" role="alert">
-            <p>No itinerary found.</p>
-        </div>
+    <div th:if="${itinerary == null}" class="alert alert-danger mt-4" role="alert">
+        <p>No itinerary found.</p>
+    </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <!-- Storing itinerary id in a JavaScript variable -->
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var itineraryId = /*[[${itinerary.id}]]*/ '0';
+    /*]]>*/
+    </script>
+
+    <script>
+        // gpt generated code
+        document.getElementById('edit-button').addEventListener('click', function () {
+            var planText = document.getElementById('plan-text');
+            planText.contentEditable = 'true';
+            this.style.display = 'none';
+            document.getElementById('save-button').style.display = 'inline';
+        });
+
+        document.getElementById('save-button').addEventListener('click', function () {
+            var planText = document.getElementById('plan-text');
+            planText.contentEditable = 'false';
+            this.style.display = 'none';
+            document.getElementById('edit-button').style.display = 'inline';
+
+            // Send a POST request to update the plan.
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/itinerary/' + itineraryId + '/edit', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.send('plan=' + encodeURIComponent(planText.innerHTML));
+        });
+    </script>
 </body>
 
 </html>

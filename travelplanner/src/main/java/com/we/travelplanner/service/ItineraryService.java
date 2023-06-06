@@ -1,6 +1,7 @@
 package com.we.travelplanner.service;
 
 import java.time.Duration;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,6 +66,14 @@ public class ItineraryService {
         itineraryRepository.deleteById(id);
     }
 
+    // edit/update itin
+    public Itinerary updateItinerary(int id, String newPlan) {
+        Itinerary itinerary = itineraryRepository.findById(id).orElse(null);
+        itinerary.setPlan(newPlan);
+        itinerary.setUpdatedAt(new Date());
+        return itineraryRepository.save(itinerary);
+    }
+
     public Itinerary generateItinerary(String userInput) {
 
         // article and api docs used for reference
@@ -83,7 +92,7 @@ public class ItineraryService {
             destinationService.saveDestination(destination);
         }
 
-        // generate plan
+        // generate plan, list model and and init prompt and user input
         ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
                 .builder()
                 .model("gpt-3.5-turbo")
