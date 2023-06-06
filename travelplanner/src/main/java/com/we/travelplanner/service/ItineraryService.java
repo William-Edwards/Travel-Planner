@@ -17,6 +17,9 @@ import com.we.travelplanner.dao.ItineraryRepository;
 import com.we.travelplanner.model.Destination;
 import com.we.travelplanner.model.Itinerary;
 
+/**
+ * Service for handling operations related to itineraries.
+ */
 @Service
 public class ItineraryService {
 
@@ -31,27 +34,57 @@ public class ItineraryService {
 
     private static final String SYSTEM_MESSAGE = " You are a sophisticated AI travel planner. Your task is to create a detailed travel itinerary based on the destination provided by the user. Please make sure to include recommendations for attractions, activities, local cuisine, and lodging where appropriate. Do not provide anything else.";
 
+    /**
+     * Get all itineraries.
+     *
+     * @return A list of all Itinerary objects.
+     */
     public List<Itinerary> getAllItineraries() {
         // get all
         return itineraryRepository.findAll();
     }
 
+    /**
+     * Get a specific itinerary by its ID.
+     *
+     * @param id The ID of the itinerary.
+     * @return The Itinerary object with the given ID, or null if no such itinerary
+     *         exists.
+     */
     public Itinerary getItineraryById(Integer id) {
         // get by id
         return itineraryRepository.findById(id).orElse(null);
     }
 
+    /**
+     * Save an itinerary. This method can be used for creating a new itinerary or
+     * updating an existing one.
+     *
+     * @param itinerary The Itinerary object to save.
+     * @return The saved Itinerary object.
+     */
     public Itinerary saveItinerary(Itinerary itinerary) {
         // save to database
         return itineraryRepository.save(itinerary);
     }
 
+    /**
+     * Delete an itinerary.
+     *
+     * @param id The ID of the itinerary to delete.
+     */
     public void deleteItinerary(Integer id) {
         // delete from database
         itineraryRepository.deleteById(id);
     }
 
-    // edit/update itin
+    /**
+     * Update an existing itinerary.
+     *
+     * @param id      The ID of the itinerary to update.
+     * @param newPlan The new plan for the itinerary.
+     * @return The updated Itinerary object.
+     */
     public Itinerary updateItinerary(int id, String newPlan) {
         Itinerary itinerary = itineraryRepository.findById(id).orElse(null);
         itinerary.setPlan(newPlan);
@@ -59,6 +92,12 @@ public class ItineraryService {
         return itineraryRepository.save(itinerary);
     }
 
+    /**
+     * Generate a new itinerary based on user input.
+     *
+     * @param userInput The user's input (destination).
+     * @return The generated Itinerary object.
+     */
     public Itinerary generateItinerary(String userInput) {
 
         // article and api docs used for reference
@@ -105,7 +144,7 @@ public class ItineraryService {
 
     }
 
-    // formatter for putting in html tags
+    // formatter for putting in html tags, so dsiplay is nice on screen
 
     private String formatPlan(String plan) {
         String[] days = plan.split("Day \\d+:");
@@ -126,12 +165,22 @@ public class ItineraryService {
 
     }
 
-    // get by name
+    /**
+     * Get all itineraries for a specific destination name.
+     *
+     * @param name The name of the destination.
+     * @return A list of Itinerary objects for the given destination name, or null
+     *         if no such itineraries exist.
+     */
     public List<Itinerary> getItineraryByDestinatioName(String name) {
         return itineraryRepository.findByDestinationName(name).orElse(null);
     }
 
-    // get 3 sample itineraries
+    /**
+     * Get a sample of itineraries.
+     *
+     * @return A list of the latest 3 Itinerary objects.
+     */
     public List<Itinerary> getSampleItineraries() {
         // get the latest 3 itineraries
         Pageable pageable = PageRequest.of(0, 3, Sort.by(Sort.Direction.DESC, "createdAt"));

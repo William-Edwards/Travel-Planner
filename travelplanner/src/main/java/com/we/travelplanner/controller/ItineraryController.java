@@ -25,14 +25,9 @@ import com.we.travelplanner.service.ItineraryService;
 @CrossOrigin
 public class ItineraryController {
 
-    private final ItineraryService itineraryService;
-
     @Autowired
-    public ItineraryController(ItineraryService itineraryService) {
-        this.itineraryService = itineraryService;
-    }
+    private ItineraryService itineraryService;
 
-    // get all
     @GetMapping("/all")
     public ResponseEntity<List<Itinerary>> getAllItineraries() {
         List<Itinerary> itineraries = itineraryService.getAllItineraries();

@@ -23,12 +23,8 @@ import com.we.travelplanner.service.DestinationService;
 @CrossOrigin
 public class DestinationController {
 
-    private final DestinationService destinationService;
-
     @Autowired
-    public DestinationController(DestinationService destinationService) {
-        this.destinationService = destinationService;
-    }
+    private DestinationService destinationService;
 
     @GetMapping("/all")
     public ResponseEntity<List<Destination>> getAllDestinations() {
