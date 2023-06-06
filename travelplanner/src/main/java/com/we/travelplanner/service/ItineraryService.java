@@ -1,6 +1,5 @@
 package com.we.travelplanner.service;
 
-import java.time.Duration;
 import java.util.Date;
 import java.util.List;
 
@@ -18,33 +17,19 @@ import com.we.travelplanner.dao.ItineraryRepository;
 import com.we.travelplanner.model.Destination;
 import com.we.travelplanner.model.Itinerary;
 
-import io.github.cdimascio.dotenv.Dotenv;
-
 @Service
 public class ItineraryService {
 
-    private static final String SYSTEM_MESSAGE = " You are a sophisticated AI travel planner. Your task is to create a detailed travel itinerary based on the destination provided by the user. Please make sure to include recommendations for attractions, activities, local cuisine, and lodging where appropriate. Do not provide anything else.";
-    private final ItineraryRepository itineraryRepository;
-    private final DestinationService destinationService;
-    private final OpenAiService openAiService;
+    @Autowired
+    private ItineraryRepository itineraryRepository;
 
     @Autowired
-    public ItineraryService(ItineraryRepository itineraryRepository, DestinationService destinationService) {
-        this.itineraryRepository = itineraryRepository;
-        this.destinationService = destinationService;
+    private DestinationService destinationService;
 
-        // get api key from env
+    @Autowired
+    private OpenAiService openAiService;
 
-        Dotenv dotenv = Dotenv.load();
-        String token = dotenv.get("OPENAI_KEY");
-
-        if (token == null) {
-            throw new IllegalArgumentException("API_KEY not set in the environment variables.");
-        }
-
-        // added timeout duration of 60s
-        this.openAiService = new OpenAiService(token, Duration.ofSeconds(60));
-    }
+    private static final String SYSTEM_MESSAGE = " You are a sophisticated AI travel planner. Your task is to create a detailed travel itinerary based on the destination provided by the user. Please make sure to include recommendations for attractions, activities, local cuisine, and lodging where appropriate. Do not provide anything else.";
 
     public List<Itinerary> getAllItineraries() {
         // get all
@@ -142,7 +127,7 @@ public class ItineraryService {
     }
 
     // get by name
-    public List<Itinerary> getiItineraryByDestinatioName(String name) {
+    public List<Itinerary> getItineraryByDestinatioName(String name) {
         return itineraryRepository.findByDestinationName(name).orElse(null);
     }
 

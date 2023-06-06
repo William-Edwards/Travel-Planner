@@ -11,12 +11,8 @@ import com.we.travelplanner.model.Destination;
 @Service
 public class DestinationService {
 
-    private final DestinationRepository destinationRepository;
-
     @Autowired
-    public DestinationService(DestinationRepository destinationRepository) {
-        this.destinationRepository = destinationRepository;
-    }
+    private DestinationRepository destinationRepository;
 
     // get all destinations
 

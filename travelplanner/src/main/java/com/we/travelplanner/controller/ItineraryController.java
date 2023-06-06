@@ -53,7 +53,7 @@ public class ItineraryController {
     // get all by name
     @GetMapping("/by-destination")
     public ResponseEntity<List<Itinerary>> getItineraryByName(@RequestParam String name) {
-        List<Itinerary> itineraries = itineraryService.getiItineraryByDestinatioName(name);
+        List<Itinerary> itineraries = itineraryService.getItineraryByDestinatioName(name);
         return ResponseEntity.status(HttpStatus.OK).body(itineraries);
     }
 

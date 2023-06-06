@@ -1,9 +1,6 @@
 package com.we.travelplanner.controller;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +12,6 @@ import com.we.travelplanner.model.Destination;
 import com.we.travelplanner.model.Itinerary;
 import com.we.travelplanner.service.DestinationService;
 import com.we.travelplanner.service.ItineraryService;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -71,7 +67,7 @@ public class MainController {
 
     @GetMapping("/destination/{name}")
     public String viewItineraries(@PathVariable String name, Model model) {
-        List<Itinerary> itineraries = itineraryService.getiItineraryByDestinatioName(name);
+        List<Itinerary> itineraries = itineraryService.getItineraryByDestinatioName(name);
         model.addAttribute("destinationName", name);
         model.addAttribute("itineraries", itineraries);
         return "itineraries";
