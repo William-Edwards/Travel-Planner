@@ -11,6 +11,9 @@ import java.time.Duration;
 @Configuration
 public class AppConfig {
 
+    /**
+     * @return OpenAiService
+     */
     // config for openai api key and timeout duration
 
     @Bean

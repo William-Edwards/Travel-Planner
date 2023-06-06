@@ -27,6 +27,9 @@ public class Destination {
     public Destination() {
     }
 
+    /**
+     * @return Integer
+     */
     public Integer getId() {
         return id;
     }
